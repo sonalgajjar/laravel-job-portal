@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//e//**)",
+      "Bash(find /mnt -maxdepth 2 -type d -name \"*exam*\" -o -type d -name \"*student*\")"
+    ]
+  }
+}

@@ -1,0 +1,186 @@
+============================================================
+  JobPortal Pro — Complete Setup Guide
+============================================================
+
+REQUIREMENTS
+------------
+- PHP 8.1 or higher
+- Composer (https://getcomposer.org)
+- MySQL 5.7 / 8.0 or MariaDB
+- Node.js 18+ and npm (for frontend assets)
+- Recommended: Laragon (includes PHP, MySQL, Composer)
+
+QUICK START (Recommended)
+--------------------------
+1. Install Laragon from https://laragon.org/download/
+2. Place the project folder inside: C:\laragon\www\job-portal\
+3. Open Laragon and start "All Services"
+4. Open a terminal in the project folder and run:
+
+     setup.bat
+
+   That's it — the script handles everything automatically.
+
+MANUAL SETUP (Step by Step)
+----------------------------
+
+Step 1: Configure Database
+  - Open phpMyAdmin (http://localhost/phpmyadmin)
+  - Create a new database named: jobportal
+  - Open the .env file in the project root and set:
+
+      DB_DATABASE=jobportal
+      DB_USERNAME=root
+      DB_PASSWORD=          (leave empty for Laragon default)
+
+Step 2: Install PHP Dependencies
+  Open a terminal in the project folder and run:
+
+      composer install
+
+Step 3: Generate App Key
+      php artisan key:generate
+
+Step 4: Run Migrations
+      php artisan migrate
+
+Step 5: Seed Database (Admin account + Job categories)
+      php artisan db:seed
+
+Step 6: Create Storage Link (for file uploads)
+      php artisan storage:link
+
+Step 7: Install & Build Frontend Assets
+      npm install
+      npm run build
+
+  (Or for development with hot reload: npm run dev)
+
+Step 8: Start the Server
+      php artisan serve
+
+Step 9: Open in Browser
+      http://localhost:8000
+
+============================================================
+  LOGIN CREDENTIALS
+============================================================
+
+ADMIN PANEL
+  URL:      http://localhost:8000/admin/login
+  Email:    admin@gmail.com
+  Password: #.admin
+
+COMPANY PANEL
+  URL:      http://localhost:8000/company/register
+  Note:     Register a new company. Admin must approve it
+            before the company can log in.
+
+USER PANEL
+  URL:      http://localhost:8000/register
+  Note:     Register a new user account directly.
+
+============================================================
+  PANEL OVERVIEW
+============================================================
+
+1. USER PANEL  (/dashboard)
+   - Browse and apply for jobs
+   - Upload resume (PDF/DOC/DOCX) or write manually
+   - Upload profile photo
+   - Save jobs to review later
+   - Track application statuses
+   - Update profile and change password
+
+2. COMPANY PANEL  (/company/dashboard)
+   - Register → wait for admin approval
+   - Post jobs with full details (salary, skills, deadline, etc.)
+   - View and manage all applications
+   - Update application status: Pending → Reviewing → Shortlisted → Hired/Rejected
+   - Upload company logo
+   - Update company profile and password
+
+3. ADMIN PANEL  (/admin/dashboard)
+   - See stats: total users, companies, jobs, applications
+   - Approve or reject new company registrations
+   - Manage all users (edit, delete, toggle admin role)
+   - Manage all companies (approve, reject, delete)
+   - Manage all jobs (create, edit, delete)
+   - View all applications and update statuses
+   - Full activity log for all panels
+   - Change admin password
+
+============================================================
+  FOLDER STRUCTURE (Key Files)
+============================================================
+
+  app/
+    Http/Controllers/
+      AdminController.php     — Admin auth, users, companies, logs
+      CompanyController.php   — Company auth, jobs, applications, settings
+      UserController.php      — User auth, profile, settings
+      JobController.php       — Public job listing + admin CRUD
+      ApplicationController.php — Apply, my-jobs, admin applications
+
+    Models/
+      Admin.php, User.php, Company.php
+      Job.php, Application.php, ActivityLog.php
+      Category.php, SavedJob.php
+
+    Http/Middleware/
+      AdminMiddleware.php     — Protects /admin/* routes
+      CompanyMiddleware.php   — Protects /company/* routes (also checks approval status)
+
+  database/
+    migrations/               — All table schemas
+    seeders/
+      AdminSeeder.php         — Creates default admin account
+      CategorySeeder.php      — Seeds 16 job categories
+
+  resources/views/
+    layouts/
+      public.blade.php        — Public site layout (header + footer)
+      user-panel.blade.php    — User dashboard sidebar layout
+      company-panel.blade.php — Company dashboard sidebar layout
+    admin/layout.blade.php    — Admin panel sidebar layout
+
+    home.blade.php            — Homepage with hero + job listings
+    jobs/index.blade.php      — Browse all jobs with filters
+    jobs/show.blade.php       — Single job detail + apply button
+    applications/apply.blade.php — Job application form
+
+    user/                     — User panel views
+    company/                  — Company panel views
+    admin/                    — Admin panel views
+
+  routes/web.php              — All routes
+
+============================================================
+  TROUBLESHOOTING
+============================================================
+
+Problem: "php is not recognized"
+  Fix: Install Laragon or add PHP to your Windows PATH.
+       Laragon auto-configures PHP in PATH when it's running.
+
+Problem: Migration fails / database error
+  Fix: Make sure MySQL is running and .env credentials are correct.
+       Check DB_DATABASE, DB_USERNAME, DB_PASSWORD in .env
+
+Problem: Images/files not showing (404)
+  Fix: Run: php artisan storage:link
+       This creates the public/storage symlink for file access.
+
+Problem: Page shows blank / 500 error
+  Fix: Check storage/logs/laravel.log for the error message.
+       Make sure APP_KEY is set in .env (run: php artisan key:generate)
+
+Problem: Company can't log in after registering
+  Fix: Admin must approve the company first.
+       Go to /admin/login → Companies → find the company → Approve.
+
+Problem: Assets (CSS/JS) not loading
+  Fix: Run: npm install && npm run build
+       Make sure Vite is not still in dev mode.
+
+============================================================

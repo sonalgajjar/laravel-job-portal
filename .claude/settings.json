@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(php --version)",
+      "PowerShell(php artisan --version)",
+      "Read(//c//**)",
+      "PowerShell($paths = @\\(\"C:\\\\php\\\\php.exe\", \"C:\\\\xampp\\\\php\\\\php.exe\", \"C:\\\\wamp64\\\\bin\\\\php\\\\php8.2.4\\\\php.exe\", \"C:\\\\laragon\\\\bin\\\\php\\\\php-8.2.8-Win32-vs16-x64\\\\php.exe\"\\); foreach\\($p in $paths\\){ if\\(Test-Path $p\\){ Write-Host \"Found: $p\" } })",
+      "Bash(Get-ChildItem -Path \"C:\\\\laragon\\\\bin\\\\php\\\\\" -ErrorAction SilentlyContinue | Select-Object -First 5 Name 2>/dev/null; Get-ChildItem -Path \"C:\\\\xampp\\\\php\\\\\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -First 3 Name)",
+      "Bash(Get-ChildItem \"C:\\\\\\\\\" -Filter \"php.exe\" -ErrorAction SilentlyContinue -Depth 4)",
+      "Bash(Select-Object -First 5 FullName)",
+      "Read(//d//**)",
+      "Read(//e/laragon/bin/php/**)",
+      "Read(//e/laragon/**)",
+      "Bash(php artisan *)",
+      "Bash(findstr \"about\\\\|contact\\\\|jobs.index\")",
+      "Bash(Select-String \"about|contact|jobs.index\")",
+      "Bash(findstr /R /C:\"rgba\\(255,255,255\" resources\\\\views\\\\*.blade.php resources\\\\views\\\\*\\\\*.blade.php resources\\\\views\\\\*\\\\*\\\\*.blade.php)",
+      "Bash(findstr /R /C:\"gradient\" resources\\\\views\\\\*.blade.php resources\\\\views\\\\*\\\\*.blade.php resources\\\\views\\\\*\\\\*\\\\*.blade.php)",
+      "Bash(findstr /R /C:\"keyframes\" resources\\\\views\\\\*.blade.php resources\\\\views\\\\*\\\\*.blade.php resources\\\\views\\\\*\\\\*\\\\*.blade.php)",
+      "PowerShell(gh --version 2>&1)"
+    ]
+  }
+}
